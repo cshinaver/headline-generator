@@ -1,0 +1,12 @@
+Have title and text
+
+	1. Sentence Extraction (grab a few sentences of importance)
+	2. tag the sentences
+	3. extract verb phrases
+	4. most important verb phrase
+		a. based on contrast between verb in document and verb in all documents
+	5. Then reconstruct
+		a. Add verb phrases to go to length of title
+		b. reconstruct in order of document 
+	6. TITLE!!
+	7. Compare
