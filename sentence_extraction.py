@@ -43,8 +43,7 @@ class SentenceExtractor:
 
     def get_most_important_sentences(self, lines):
         sorted_scores = self.calculate_tfidf_for_lines(lines)
-        sorted_lines = [lines[t[0]] for t in sorted_scores]
-        return sorted_lines
+        return sorted_scores
 
     def get_sentences_from_doc(self, doc):
         sentences = nltk.sent_tokenize(doc)
