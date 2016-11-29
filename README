@@ -10,3 +10,8 @@ Have title and text
 		b. reconstruct in order of document 
 	6. TITLE!!
 	7. Compare
+
+
+	nltk downloads:
+		#nltk.download('punkt')
+		#nltk.download('averaged_perceptron_tagger')
