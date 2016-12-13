@@ -7,7 +7,7 @@ Have title and text
 		a. based on contrast between verb in document and verb in all documents
 	5. Then reconstruct
 		a. Add verb phrases to go to length of title
-		b. reconstruct in order of document 
+		b. reconstruct in order of document
 	6. TITLE!!
 	7. Compare
 
@@ -15,3 +15,7 @@ Have title and text
 	nltk downloads:
 		#nltk.download('punkt')
 		#nltk.download('averaged_perceptron_tagger')
+
+To run:
+   Install all requirements in requirements.txt and java
+   ./run_rouger.py -d N_dev_docs -t N_train_docs
