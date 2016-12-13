@@ -8,7 +8,8 @@ from sentence_extraction import SentenceExtractor
 from phrase import Phrase
 
 class Verb_Parse():
-    def __init__(self, total_train_docs=300):
+    def __init__(self, total_train_docs=300, total_dev_docs=10):
+        self.total_dev_docs = total_dev_docs
         self.total_train_docs = total_train_docs
         self.num_important = 2 #top two sentences
         self.docs = self.get_doc_generator(sys.argv[1])
@@ -54,9 +55,12 @@ class Verb_Parse():
         docs = itertools.islice(
             self.get_doc_generator(sys.argv[2]),
             0,
-            10
+            self.total_dev_docs,
             )
+        current_doc = 0
         for article in docs:
+            print("current doc: {}".format(current_doc))
+            current_doc += 1
             #order sentences
             important_list, sentences = self.get_important_sentences(article)
             #pull verbs from these sentences here!
@@ -210,8 +214,9 @@ def get_titles_from_phrase_groups(phrase_groups):
 
 
 if __name__ == "__main__":
-    verb_parse = Verb_Parse(total_train_docs=3000)
+    verb_parse = Verb_Parse(total_train_docs=int(sys.argv[3]), total_dev_docs=int(sys.argv[4]))
     phrase_groups = verb_parse.get_titles()
     titles = get_titles_from_phrase_groups(phrase_groups)
-    for title in titles:
-        print(title)
+    for i, title in enumerate(titles):
+        with open("rouge/rouge-eval/system/headline{}_system{}".format(i, 1), 'w') as f:
+            f.write(title)
