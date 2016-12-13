@@ -8,20 +8,24 @@ from sentence_extraction import SentenceExtractor
 from phrase import Phrase
 
 class Verb_Parse():
-    def __init__(self):
+    def __init__(self, total_train_docs=300):
+        self.total_train_docs = total_train_docs
         self.num_important = 2 #top two sentences
         self.docs = self.get_doc_generator(sys.argv[1])
         self.sentence_extractor = SentenceExtractor()
+        #self.get_title_generator()
+
+    def get_titles(self):
         self.initiate()
         self.titles = self.run()
-        print(self.titles)
-        #self.get_title_generator()
+        return self.titles
+
     def initiate(self):
         print("training...")
         self.sentence_extractor.fit_tfidf(itertools.islice(
             self.docs,
             0,
-            300
+            self.total_train_docs,
             )
         )
 
@@ -194,5 +198,20 @@ class Verb_Parse():
             )
             return sorted_scores
 
+
+def get_titles_from_phrase_groups(phrase_groups):
+    titles = []
+    for phrase_group in phrase_groups:
+        phrases = []
+        for phrase in phrase_group:
+            phrases.append(phrase.phrase)
+        titles.append("".join(phrases))
+    return titles
+
+
 if __name__ == "__main__":
-    verb_parse = Verb_Parse()
+    verb_parse = Verb_Parse(total_train_docs=3000)
+    phrase_groups = verb_parse.get_titles()
+    titles = get_titles_from_phrase_groups(phrase_groups)
+    for title in titles:
+        print(title)

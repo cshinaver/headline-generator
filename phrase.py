@@ -4,9 +4,9 @@ class Phrase():
 		self.word = wd
 		self.next_word_list = nx_wd
 		self.phrase = self.create_phrase()
-		
+
 	def __str__(self):
-		return 'object' + str(self.word)
+		return 'Phrase(' + self.phrase + ')'
 
 	def __repr__(self):
 		return self.phrase
