@@ -50,15 +50,15 @@ class SentenceExtractor:
         return sentences
 
 
-def get_doc_generator():
-    with open(sys.argv[1]) as f:
+def get_doc_generator(filename):
+    with open(filename) as f:
         for line in f.readlines():
             doc = json.loads(line)
             content = doc['content']
             yield content
 
 if __name__ == '__main__':
-    docs = get_doc_generator()
+    docs = get_doc_generator(sys.argv[1])
     sentence_extractor = SentenceExtractor()
     tfidf_matrix = sentence_extractor.fit_tfidf(itertools.islice(
             docs,
@@ -67,6 +67,6 @@ if __name__ == '__main__':
         )
     )
     sentences = sentence_extractor.get_sentences_from_doc(
-        next(get_doc_generator())
+        next(get_doc_generator(sys.argv[1]))
     )
     print(sentence_extractor.get_most_important_sentences(sentences))

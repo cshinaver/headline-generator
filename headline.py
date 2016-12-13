@@ -10,7 +10,7 @@ from phrase import Phrase
 class Verb_Parse():
     def __init__(self):
         self.num_important = 2 #top two sentences
-        self.docs = self.get_doc_generator()
+        self.docs = self.get_doc_generator(sys.argv[1])
         self.sentence_extractor = SentenceExtractor()
         self.initiate()
         self.titles = self.run()
@@ -25,8 +25,8 @@ class Verb_Parse():
             )
         )
 
-    def get_doc_generator(self):
-        with open(sys.argv[1]) as f:
+    def get_doc_generator(self, filename):
+        with open(filename) as f:
             for line in f.readlines():
                 doc = json.loads(line)
                 content = doc['content']
@@ -48,7 +48,7 @@ class Verb_Parse():
         print("running...")
         phrases_list = []
         docs = itertools.islice(
-            self.get_doc_generator(),
+            self.get_doc_generator(sys.argv[2]),
             0,
             10
             )
@@ -67,7 +67,7 @@ class Verb_Parse():
     def get_important_sentences(self,article):
         sentences = self.sentence_extractor.get_sentences_from_doc(article) #seperate lines of document
         important_list = self.sentence_extractor.get_most_important_sentences(sentences) #important list for the document
-        return important_list, sentences    
+        return important_list, sentences
 
     def take_verbs_from_list(self,index_list,sentences):
         verb_list = []
@@ -130,7 +130,7 @@ class Verb_Parse():
     def get_important_phrases(self,verbs,sentences):
         phrases_list = []
         prob_list = []
-        important_list = []    
+        important_list = []
         if not self.sentence_extractor.tfidf:
             raise RuntimeError(
                 "Must have called fit_tfidf before trying to calculate tfidf"
@@ -145,7 +145,7 @@ class Verb_Parse():
             for word in verb_group[2].get_list_words():
                 if word in inverse_list:
                     prob_phrase += self.get_prob_for_word(line_number,word,inverse_list,lines_matrix)
-                   
+
             prob_list.append((verb_group,prob_phrase))
         #prob_list contains verb_group and prob for that verb
         #print(prob_list[:2])
@@ -162,7 +162,7 @@ class Verb_Parse():
         nonzero_index = inverse_list.index(word)
         matrix_index = lines_matrix[line_number].nonzero()[1][nonzero_index]
         prob = lines_matrix.toarray().tolist()[line_number][matrix_index]
-                
+
         return prob
 
 
